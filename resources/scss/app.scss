@@ -1,0 +1,93 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+@import '~bootstrap/scss/modal';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/close';
+
+@import '~bootstrap/scss/_input-group';
+@import '~bootstrap/scss/_forms';
+@import '~bootstrap/scss/_custom-forms';
+
+@import '~bootstrap/scss/mixins/_float';
+
+@import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+
+@import 'vue-multiselect/dist/vue-multiselect.min.css';
+// @import 'bootstrap/dist/css/bootstrap.css';
+
+
+@import '../css/site.css';
+
+.rounded-md {
+    border-radius: 0;
+}
+
+.dashboard {
+    a {
+        color: #CA8A4B;
+    }
+}
+
+.loading {
+    // height: 70vh;
+    width: 100%;
+    text-align: center;
+
+    p {
+        text-align: center;
+        position: absolute;
+        left: 50%;
+        width: 80%;
+        top: 60%;
+        transform: translate3d(-50%, 1px, 1px);
+    }
+
+    &:after {
+        content: "";
+        display: inline-block;
+        top: 30%;
+        position: relative;
+        border: 5px solid #ffffff;
+        -webkit-animation: spin 1s linear infinite;
+        animation: spin 1s linear infinite;
+        border-top: 3px solid #68B3C8;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+    }
+
+    &.file-loading {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        &:after {
+            content: "";
+            display: inline-block;
+            right: 30%;
+            position: relative;
+            border: 5px solid #ca8a4b;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+            border-top: 5px solid #0c3458;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+        }
+    }
+    &.top-0 {
+        &:after {
+            top: 0;
+        }
+    }
+}
+
+.toast-body {
+    padding: .75rem
+}
