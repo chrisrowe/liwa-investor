@@ -1,68 +1,65 @@
 <?php
 
+use App\Http\Controllers\AccessReportController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\FileFolderController;
+use App\Http\Controllers\LiwaFundReportsController;
+use App\Http\Controllers\ResearchController;
+use App\Http\Controllers\SupportController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 $baseFileFolders = config('filefolders.baseFolders');
 
 Route::group(['middleware' => ['role:super-admin|admin', 'auth:sanctum', 'verified'], 'prefix' => 'admin'], function () {
-    Route::get('users/index', 'App\Http\Controllers\UsersController@index')->name('user.index');
-    Route::get('users/list', 'App\Http\Controllers\UsersController@getUsersList')->name('user.list');
-    Route::get('users/create', 'App\Http\Controllers\UsersController@create')->name('user.create');
-    Route::get('users/edit/{user}', 'App\Http\Controllers\UsersController@edit')->name('user.edit');
-    Route::post('users/update/{user}', 'App\Http\Controllers\UsersController@update')->name('user.update');
-    Route::post('users/store', 'App\Http\Controllers\UsersController@store')->name('user.store');
-    Route::post('users/send-reset-password/{user}', 'App\Http\Controllers\UsersController@sendResetPassword')->name('user.reset-password');
-    Route::get('users/{user}/get-password-reset-link', 'App\Http\Controllers\UsersController@getPasswordResetLink')->name('user.get-password-reset-link');
-    Route::delete('users/destroy/{user}', 'App\Http\Controllers\UsersController@destroy')->name('user.destroy');
-    Route::post('users/{user}/save-folders', 'App\Http\Controllers\UsersController@saveUserFolders')->name('user.save-user-folders-permissions');
-    Route::post('users/{user}/save-subfolders', 'App\Http\Controllers\UsersController@saveUserSubolders')->name('user.save-user-subfolders-permissions');
+    Route::get('users/index', [UsersController::class, 'index'])->name('user.index');
+    Route::get('users/list', [UsersController::class, 'getUsersList'])->name('user.list');
+    Route::get('users/create', [UsersController::class, 'create'])->name('user.create');
+    Route::get('users/edit/{user}', [UsersController::class, 'edit'])->name('user.edit');
+    Route::post('users/update/{user}', [UsersController::class, 'update'])->name('user.update');
+    Route::post('users/store', [UsersController::class, 'store'])->name('user.store');
+    Route::post('users/send-reset-password/{user}', [UsersController::class, 'sendResetPassword'])->name('user.reset-password');
+    Route::get('users/{user}/get-password-reset-link', [UsersController::class, 'getPasswordResetLink'])->name('user.get-password-reset-link');
+    Route::delete('users/destroy/{user}', [UsersController::class, 'destroy'])->name('user.destroy');
+    Route::post('users/{user}/save-folders', [UsersController::class, 'saveUserFolders'])->name('user.save-user-folders-permissions');
+    Route::post('users/{user}/save-subfolders', [UsersController::class, 'saveUserSubolders'])->name('user.save-user-subfolders-permissions');
 
-    Route::get('activity/index', 'App\Http\Controllers\ActivityController@index')->name('activity.index');
-    Route::get('activity/export', 'App\Http\Controllers\ActivityController@exportToExcel')->name('activity-report.export');
-    Route::get('support', 'App\Http\Controllers\SupportController@index')->name('support');
+    Route::get('activity/index', [ActivityController::class, 'index'])->name('activity.index');
+    Route::get('activity/export', [ActivityController::class, 'exportToExcel'])->name('activity-report.export');
+    Route::get('support', [SupportController::class, 'index'])->name('support');
 
-    Route::get('access-report/index', 'App\Http\Controllers\AccessReportController@index')->name('access-report.index');
-    Route::get('access-report/export', 'App\Http\Controllers\AccessReportController@exportToExcel')->name('access-report.export');
-
+    Route::get('access-report/index', [AccessReportController::class, 'index'])->name('access-report.index');
+    Route::get('access-report/export', [AccessReportController::class, 'exportToExcel'])->name('access-report.export');
 });
 
 Route::group(['middleware' => ['role:super-admin|admin', 'auth:sanctum', 'verified'], 'prefix' => 'admin'], function () use ($baseFileFolders) {
-    Route::get('folders/{folder}/create/{file_folder?}', 'App\Http\Controllers\FileFolderController@create')
+    Route::get('folders/{folder}/create/{file_folder?}', [FileFolderController::class, 'create'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::get('folders/{folder}/edit/{file_folder}', 'App\Http\Controllers\FileFolderController@edit')
+    Route::get('folders/{folder}/edit/{file_folder}', [FileFolderController::class, 'edit'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::post('folders/{folder}/update/{file_folder}', 'App\Http\Controllers\FileFolderController@update')
+    Route::post('folders/{folder}/update/{file_folder}', [FileFolderController::class, 'update'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::post('folders/{folder}/store', 'App\Http\Controllers\FileFolderController@store')
+    Route::post('folders/{folder}/store', [FileFolderController::class, 'store'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::delete('folders/{folder}/destroy/{file_folder}', 'App\Http\Controllers\FileFolderController@destroy')
+    Route::delete('folders/{folder}/destroy/{file_folder}', [FileFolderController::class, 'destroy'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
 
-    Route::get('folders/{folder}/add_permission_to_user', 'App\Http\Controllers\FileFolderController@addPermissionToUser')
+    Route::get('folders/{folder}/add_permission_to_user', [FileFolderController::class, 'addPermissionToUser'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::post('folders/{folder}/save_permission_to_user', 'App\Http\Controllers\FileFolderController@savePermissionToUser')
+    Route::post('folders/{folder}/save_permission_to_user', [FileFolderController::class, 'savePermissionToUser'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::get('folders/{folder}/add_subfolder_permission_to_user/{file_folder}', 'App\Http\Controllers\FileFolderController@addSubfolderPermissionToUser')
+    Route::get('folders/{folder}/add_subfolder_permission_to_user/{file_folder}', [FileFolderController::class, 'addSubfolderPermissionToUser'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
     Route::post(
         'folders/{folder}/save_subfolder_permission_to_user/{file_folder}',
-        'App\Http\Controllers\FileFolderController@saveSubfolderPermissionToUser'
+        [FileFolderController::class, 'saveSubfolderPermissionToUser']
     )
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::get('folders/{folder}/{file_folder}/investors-access-list', 'App\Http\Controllers\FileFolderController@getInvestorsAccess')
+    Route::get('folders/{folder}/{file_folder}/investors-access-list', [FileFolderController::class, 'getInvestorsAccess'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
-    Route::get('folders/{folder}/investors-access-list', 'App\Http\Controllers\FileFolderController@getInvestorsAccess')
+    Route::get('folders/{folder}/investors-access-list', [FileFolderController::class, 'getInvestorsAccess'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
     foreach ($baseFileFolders as $baseFileFolder) {
         Route::prefix('folders')->group(function () use ($baseFileFolder) {
@@ -77,47 +74,46 @@ Route::group(['middleware' => ['role:super-admin|admin', 'auth:sanctum', 'verifi
                 Route::post('/update/{file_folder}')->name($baseFileFolder . '.folder.update');
                 Route::post('/store')->name($baseFileFolder . '.folder.store');
                 Route::delete('/destroy/{file_folder}')->name($baseFileFolder . '.folder.destroy');
-
-                /// folder
                 Route::post('/save_subfolder_permission_to_user/{file_folder}')->name($baseFileFolder . '.save_subfolder_permission_to_user');
             });
         });
     }
 
-    Route::get('analysis-data', 'App\Http\Controllers\FileFolderController@create')
+    Route::get('analysis-data', [FileFolderController::class, 'create'])
         ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
 });
 
 Route::group(['middleware' => ['role:super-admin|admin', 'auth:sanctum', 'verified'], 'prefix' => 'api/admin'], function () use ($baseFileFolders) {
-    Route::get('analysis-data', 'App\Http\Controllers\ActivityController@getAnalysisData')
+    Route::get('analysis-data', [ActivityController::class, 'getAnalysisData'])
         ->name('api.admin.activity.analysis-data');
-    Route::get('user-activity-data', 'App\Http\Controllers\ActivityController@getUserActivityData')
+    Route::get('user-activity-data', [ActivityController::class, 'getUserActivityData'])
         ->name('api.admin.activity.user-activity-data');
-    Route::get('files-statistic-data', 'App\Http\Controllers\ActivityController@getFilesStatisticData')
+    Route::get('files-statistic-data', [ActivityController::class, 'getFilesStatisticData'])
         ->name('api.admin.activity.files-statistic-data');
-    Route::get('admin-dashboard-export', 'App\Http\Controllers\ActivityController@exportAdminDashboardData')
+    Route::get('admin-dashboard-export', [ActivityController::class, 'exportAdminDashboardData'])
         ->name('api.admin.activity.export-admin-dashboard-data');
 });
 
 Route::group(['middleware' => ['role:super-admin|admin', 'auth:sanctum', 'verified']], function () use ($baseFileFolders) {
     foreach ($baseFileFolders as $baseFileFolder) {
         $controllerName = str_replace(' ', '', ucwords(str_replace('-', ' ', $baseFileFolder))) . 'Controller';
+        $controllerClass = 'App\\Http\\Controllers\\' . $controllerName;
         if ($baseFileFolder === 'videos') {
-            $controllerName = 'VideoController';
-            Route::post('/folders/' . $baseFileFolder . '/embed/{file_folder?}', 'App\Http\Controllers\\' . $controllerName . '@embed')
+            $controllerClass = VideoController::class;
+            Route::post('/folders/' . $baseFileFolder . '/embed/{file_folder?}', [$controllerClass, 'embed'])
                 ->name($baseFileFolder . '.embed');
         }
 
-        Route::post('/folders/' . $baseFileFolder . '/store/{file_folder?}', 'App\Http\Controllers\\' . $controllerName . '@store')
+        Route::post('/folders/' . $baseFileFolder . '/store/{file_folder?}', [$controllerClass, 'store'])
             ->name($baseFileFolder . '.store');
-        Route::delete('/folders/' . $baseFileFolder . '/destroy/{file}', 'App\Http\Controllers\\' . $controllerName . '@destroy')
+        Route::delete('/folders/' . $baseFileFolder . '/destroy/{file}', [$controllerClass, 'destroy'])
             ->name($baseFileFolder . '.destroy');
     }
 });
 
 Route::group(['middleware' => ['role:super-admin|admin|investor', 'auth:sanctum', 'verified', 'can_see_folder', 'can_see_subfolder']], function () use ($baseFileFolders) {
-    Route::get('/files/view/{file}', 'App\Http\Controllers\FileController@viewFile')->name('file.view');
-    Route::get('/files/download/{file}', 'App\Http\Controllers\FileController@downloadFile')->name('file.download');
+    Route::get('/files/view/{file}', [FileController::class, 'viewFile'])->name('file.view');
+    Route::get('/files/download/{file}', [FileController::class, 'downloadFile'])->name('file.download');
 
     Route::group(
         ['middleware' => ['track_folder_action']],
@@ -126,15 +122,15 @@ Route::group(['middleware' => ['role:super-admin|admin|investor', 'auth:sanctum'
                 return Inertia\Inertia::render('Dashboard');
             })->name('dashboard');
 
-            Route::get('/{folder}', ['App\Http\Controllers\FileFolderController', 'index'])
+            Route::get('/{folder}', [FileFolderController::class, 'index'])
                 ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
 
-            Route::get('folders/{folder}/{file_folder?}', 'App\Http\Controllers\FileFolderController@show')
+            Route::get('folders/{folder}/{file_folder?}', [FileFolderController::class, 'show'])
                 ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
 
             foreach ($baseFileFolders as $baseFileFolder) {
-                Route::get('/' . $baseFileFolder, ['App\Http\Controllers\FileFolderController', 'index'])->name($baseFileFolder);
-                Route::get('/folders/' . $baseFileFolder . '/{file_folder?}', 'App\Http\Controllers\FileFolderController@show')->name($baseFileFolder . '.folder.index');
+                Route::get('/' . $baseFileFolder, [FileFolderController::class, 'index'])->name($baseFileFolder);
+                Route::get('/folders/' . $baseFileFolder . '/{file_folder?}', [FileFolderController::class, 'show'])->name($baseFileFolder . '.folder.index');
             }
         }
     );

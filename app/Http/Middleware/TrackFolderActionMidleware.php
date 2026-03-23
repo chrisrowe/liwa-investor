@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\FileFolderAction;
 // use Illuminate\Support\Facades\Auth;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class TrackFolderActionMidleware
 {

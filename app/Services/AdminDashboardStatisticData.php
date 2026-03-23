@@ -6,7 +6,7 @@ use App\Models\Page;
 use App\Models\FileAction;
 use App\Models\FileFolderAction;
 use App\Models\User;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class AdminDashboardStatisticData

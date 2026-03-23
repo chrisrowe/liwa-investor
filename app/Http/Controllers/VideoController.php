@@ -8,7 +8,7 @@ use App\Models\FileVideo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Storage;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreVideoRequest;
 use App\Services\PaginationService;
 use App\Http\Requests\EmbedVideoRequest;

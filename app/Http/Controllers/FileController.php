@@ -7,7 +7,7 @@ use App\Models\FileAction;
 use Illuminate\Http\Request;
 use Storage;
 use Config;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class FileController extends Controller
 {

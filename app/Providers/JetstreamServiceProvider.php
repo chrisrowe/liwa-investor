@@ -7,8 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Session;
-use Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class JetstreamServiceProvider extends ServiceProvider
 {

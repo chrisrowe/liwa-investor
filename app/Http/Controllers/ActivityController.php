@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Services\PaginationService;
 use Maatwebsite\Excel\Facades\Excel;

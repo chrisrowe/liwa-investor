@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Str;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Hash;
 use App\Models\User;
 use Inertia\Inertia;

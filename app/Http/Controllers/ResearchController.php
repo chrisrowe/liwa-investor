@@ -7,7 +7,7 @@ use App\Models\FileFolder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Storage;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreResearchRequest;
 use App\Services\PaginationService;
 

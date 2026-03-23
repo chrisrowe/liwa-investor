@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\FileFolder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\Services\PaginationService;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AccessReportExport\AccessReportExport;
