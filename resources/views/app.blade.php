@@ -17,6 +17,13 @@
 
         <!-- Scripts -->
         @routes
+        <script>
+            // Ziggy v2 route() returns a plain string; old app code calls .url() on it.
+            // Patch String.prototype.url so route('name').url() still works.
+            if (!String.prototype.url) {
+                String.prototype.url = function() { return this.toString(); };
+            }
+        </script>
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
