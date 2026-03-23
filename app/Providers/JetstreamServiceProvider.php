@@ -33,11 +33,14 @@ class JetstreamServiceProvider extends ServiceProvider
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
         Inertia::share([
+            'user' => function() {
+                return Auth::user();
+            },
             'user_roles' => function() {
-                return Auth::user()->getRoleNames();
+                return Auth::user()?->getRoleNames() ?? collect();
             },
             'user_permissions' => function() {
-                return Auth::user()->getPermissionNames();
+                return Auth::user()?->getPermissionNames() ?? collect();
             },
         ]);
         Inertia::share([

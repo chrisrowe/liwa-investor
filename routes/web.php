@@ -133,8 +133,8 @@ Route::group(['middleware' => ['role:super-admin|admin|investor', 'auth:sanctum'
                 ->where('folder', '(' . implode('|', $baseFileFolders) . ')');
 
             foreach ($baseFileFolders as $baseFileFolder) {
-                Route::get('/' . $baseFileFolder)->name($baseFileFolder);
-                Route::get('/folders/' . $baseFileFolder . '/{file_folder?}')->name($baseFileFolder . '.folder.index');
+                Route::get('/' . $baseFileFolder, ['App\Http\Controllers\FileFolderController', 'index'])->name($baseFileFolder);
+                Route::get('/folders/' . $baseFileFolder . '/{file_folder?}', 'App\Http\Controllers\FileFolderController@show')->name($baseFileFolder . '.folder.index');
             }
         }
     );
