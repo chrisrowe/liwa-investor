@@ -23,49 +23,56 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Return 303 redirects so PUT/DELETE requests redirect as GET
-        $this->app->singleton(PasswordUpdateResponse::class, function () {
-            return new class implements PasswordUpdateResponse {
-                public function toResponse($request)
-                {
-                    return back()->setStatusCode(303);
-                }
+        // Inertia v0.x sends real PUT/DELETE via XHR. A 302/303 redirect
+        // causes the browser to follow with the same method, hitting a
+        // GET-only route with PUT → 405. Return 409 with X-Inertia-Location
+        // to force a client-side page reload (Inertia's external redirect).
+        $inertiaResponse = function ($request) {
+            if ($request->header('X-Inertia')) {
+                return response('', 409, [
+                    'X-Inertia-Location' => url()->previous(),
+                ]);
+            }
+            return back();
+        };
+
+        $this->app->singleton(PasswordUpdateResponse::class, function () use ($inertiaResponse) {
+            return new class($inertiaResponse) implements PasswordUpdateResponse {
+                private $respond;
+                public function __construct($respond) { $this->respond = $respond; }
+                public function toResponse($request) { return ($this->respond)($request); }
             };
         });
 
-        $this->app->singleton(ProfileInformationUpdatedResponse::class, function () {
-            return new class implements ProfileInformationUpdatedResponse {
-                public function toResponse($request)
-                {
-                    return back()->setStatusCode(303);
-                }
+        $this->app->singleton(ProfileInformationUpdatedResponse::class, function () use ($inertiaResponse) {
+            return new class($inertiaResponse) implements ProfileInformationUpdatedResponse {
+                private $respond;
+                public function __construct($respond) { $this->respond = $respond; }
+                public function toResponse($request) { return ($this->respond)($request); }
             };
         });
 
-        $this->app->singleton(TwoFactorDisabledResponse::class, function () {
-            return new class implements TwoFactorDisabledResponse {
-                public function toResponse($request)
-                {
-                    return back()->setStatusCode(303);
-                }
+        $this->app->singleton(TwoFactorDisabledResponse::class, function () use ($inertiaResponse) {
+            return new class($inertiaResponse) implements TwoFactorDisabledResponse {
+                private $respond;
+                public function __construct($respond) { $this->respond = $respond; }
+                public function toResponse($request) { return ($this->respond)($request); }
             };
         });
 
-        $this->app->singleton(TwoFactorEnabledResponse::class, function () {
-            return new class implements TwoFactorEnabledResponse {
-                public function toResponse($request)
-                {
-                    return back()->setStatusCode(303);
-                }
+        $this->app->singleton(TwoFactorEnabledResponse::class, function () use ($inertiaResponse) {
+            return new class($inertiaResponse) implements TwoFactorEnabledResponse {
+                private $respond;
+                public function __construct($respond) { $this->respond = $respond; }
+                public function toResponse($request) { return ($this->respond)($request); }
             };
         });
 
-        $this->app->singleton(TwoFactorConfirmedResponse::class, function () {
-            return new class implements TwoFactorConfirmedResponse {
-                public function toResponse($request)
-                {
-                    return back()->setStatusCode(303);
-                }
+        $this->app->singleton(TwoFactorConfirmedResponse::class, function () use ($inertiaResponse) {
+            return new class($inertiaResponse) implements TwoFactorConfirmedResponse {
+                private $respond;
+                public function __construct($respond) { $this->respond = $respond; }
+                public function toResponse($request) { return ($this->respond)($request); }
             };
         });
     }
