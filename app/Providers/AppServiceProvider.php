@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
 
         Inertia::share([
             'app' => [
-                'adobeReaderKey' => env('ADOBE_READER_EMBEDED_API_CLIENT_ID', null)
+                'adobeReaderKey' => config('app.adobe_reader_key')
             ],
         ]);
     }

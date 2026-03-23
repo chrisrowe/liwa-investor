@@ -58,6 +58,8 @@ return [
         str_replace('http://', 'https://', env('APP_URL', 'https://investors.liwacap.com')) :
         env('APP_URL', 'https://investors.liwacap.com'),
 
+    'adobe_reader_key' => env('ADOBE_READER_EMBEDED_API_CLIENT_ID'),
+
     'asset_url' => env('ENFORCE_HTTPS', false) ?
         str_replace('http://', 'https://', env('ASSET_URL', env('APP_URL', 'https://investors.liwacap.com'))) :
         env('ASSET_URL', null),
