@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Str;
 use Illuminate\Support\Facades\Auth;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\FileFolder;

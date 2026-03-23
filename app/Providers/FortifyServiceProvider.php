@@ -7,6 +7,11 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Contracts\PasswordUpdateResponse;
+use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse;
+use Laravel\Fortify\Contracts\TwoFactorDisabledResponse;
+use Laravel\Fortify\Contracts\TwoFactorEnabledResponse;
+use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -18,7 +23,51 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Return 303 redirects so PUT/DELETE requests redirect as GET
+        $this->app->singleton(PasswordUpdateResponse::class, function () {
+            return new class implements PasswordUpdateResponse {
+                public function toResponse($request)
+                {
+                    return back()->setStatusCode(303);
+                }
+            };
+        });
+
+        $this->app->singleton(ProfileInformationUpdatedResponse::class, function () {
+            return new class implements ProfileInformationUpdatedResponse {
+                public function toResponse($request)
+                {
+                    return back()->setStatusCode(303);
+                }
+            };
+        });
+
+        $this->app->singleton(TwoFactorDisabledResponse::class, function () {
+            return new class implements TwoFactorDisabledResponse {
+                public function toResponse($request)
+                {
+                    return back()->setStatusCode(303);
+                }
+            };
+        });
+
+        $this->app->singleton(TwoFactorEnabledResponse::class, function () {
+            return new class implements TwoFactorEnabledResponse {
+                public function toResponse($request)
+                {
+                    return back()->setStatusCode(303);
+                }
+            };
+        });
+
+        $this->app->singleton(TwoFactorConfirmedResponse::class, function () {
+            return new class implements TwoFactorConfirmedResponse {
+                public function toResponse($request)
+                {
+                    return back()->setStatusCode(303);
+                }
+            };
+        });
     }
 
     /**

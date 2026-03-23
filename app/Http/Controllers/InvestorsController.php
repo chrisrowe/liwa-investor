@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\SaveInvestorRequest;
 use Inertia\Inertia;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvestorWelcomeEmail;
